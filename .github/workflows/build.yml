@@ -12,5 +12,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm install
-      - run: npm run build
+      - name: Install web dependencies
+        run: npm install
+      - name: Build responsive website
+        run: npm run build
+      - name: Install backend dependencies
+        run: npm install --prefix server
+      - name: Check backend JavaScript syntax
+        run: |
+          node --check server/src/index.js
+          node --check server/src/worker.js
