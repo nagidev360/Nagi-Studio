@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.gradle.api.tasks.compile.JavaCompile
 
 plugins {
     id("com.android.application")
@@ -21,9 +20,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures { compose = true }
-}
-tasks.withType<JavaCompile>().configureEach {
-    options.release.set(17)
 }
 kotlin {
     jvmToolchain(17)
