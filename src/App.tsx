@@ -12,7 +12,7 @@ type BotItem = { id: number; name: string; platform: BotPlatform; status: 'Runni
 const initialBots: BotItem[] = [
   { id: 1, name: 'Community Helper', platform: 'Discord', status: 'Running', commands: 18, updated: '4 min ago' },
   { id: 2, name: 'Welcome Assistant', platform: 'Telegram', status: 'Running', commands: 9, updated: 'Yesterday' },
-  { id: 3, name: 'Support Flow', platform: 'Web', status: 'Draft', commands: 6, updated: '2 days ago' },
+  { id: 3, name: 'Support Flow', platform: 'Website chatbot', status: 'Draft', commands: 6, updated: '2 days ago' },
 ];
 const nav = [
   { label: 'Workspace', items: [{ name: 'Overview', icon: LayoutDashboard }, { name: 'My bots', icon: Bot }, { name: 'Bot categories', icon: LayoutDashboard }, { name: 'Flow builder', icon: Workflow }, { name: 'Code editor', icon: Code2 }, { name: 'Templates', icon: Sparkles }] },
