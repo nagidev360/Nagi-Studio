@@ -26,7 +26,7 @@ jobs:
         with:
           node-version: 20
       - name: Install dependencies
-        run: npm ci
+        run: npm install --no-audit --no-fund
       - name: Build website
         run: npm run build
       - uses: actions/configure-pages@v5
