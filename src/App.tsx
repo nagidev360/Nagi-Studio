@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import IntegrationsPanel from './IntegrationsPanel';
 import {
   Activity, ArrowDown, ArrowRight, Bell, Bot, Check, ChevronDown, CircleHelp,
   Clock3, Code2, Command, CreditCard, FilePlus2, Filter, Globe2,
@@ -49,7 +50,7 @@ function App() {
       <header className="topbar"><div className="breadcrumbs"><span>Workspace</span><span className="crumb-slash">/</span><b>{active}</b></div><div className="top-actions"><div className="status-pill"><span/> All systems operational</div><button className="icon-button notification" onClick={() => notify('You are all caught up')} aria-label="Notifications"><Bell size={18}/><i/></button><button className="help-button" onClick={() => notify('Help center is coming soon')}><CircleHelp size={17}/><span>Help center</span></button></div></header>
       <div className="content">
         <div className="page-heading"><div><div className="eyebrow"><Sparkles size={14}/> YOUR AUTOMATION HQ</div><h1>{pageTitle}<span className="heading-dot">.</span></h1><p>{active === 'Overview' ? 'Build smarter bots, automate conversations, and keep everything in sync.' : active === 'Flow builder' ? 'Design a conversation flow with visual blocks.' : 'Manage your automation workspace in one place.'}</p></div><button className="primary-button" onClick={() => setShowCreate(true)}><Plus size={17}/> Create a bot</button></div>
-        {active === 'Flow builder' ? <FlowBuilder notify={notify}/> : active === 'Templates' ? <section className="templates-grid">{templates.map(t => <article className="template-card" key={t.title}><div className="template-icon"><t.icon size={22}/></div><span className="tag">{t.tag}</span><h3>{t.title}</h3><p>{t.desc}</p><button className="text-button" onClick={() => {setBotName(t.title);setShowCreate(true)}}>Use template <ArrowRight size={15}/></button></article>)}</section> : <>
+        {active === 'Integrations' ? <IntegrationsPanel/> : active === 'Flow builder' ? <FlowBuilder notify={notify}/> : active === 'Templates' ? <section className="templates-grid">{templates.map(t => <article className="template-card" key={t.title}><div className="template-icon"><t.icon size={22}/></div><span className="tag">{t.tag}</span><h3>{t.title}</h3><p>{t.desc}</p><button className="text-button" onClick={() => {setBotName(t.title);setShowCreate(true)}}>Use template <ArrowRight size={15}/></button></article>)}</section> : <>
           <section className="stats-grid">
             <Stat title="Total bots" value={String(bots.length).padStart(2,'0')} note="+2 this month" icon={Bot} tone="purple"/>
             <Stat title="Active automations" value={String(bots.filter(b=>b.status==='Running').length*12+6)} note="Across all bots" icon={Zap} tone="blue"/>
