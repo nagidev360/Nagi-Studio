@@ -89,11 +89,8 @@ function Stat({title,value,note,icon:Icon,tone}:{title:string;value:string;note:
 function CodeEditor({notify}:{notify:(s:string)=>void}) {
   const [language,setLanguage] = useState<'Python'|'JavaScript'>('Python');
   const [target,setTarget] = useState('Discord');
-  const [code,setCode] = useState("import discord\nfrom discord.ext import commands\n\nbot = commands.Bot(command_prefix='!', intents=discord.Intents.default())\n\n@bot.command()\nasync def ping(ctx):\n    await ctx.send('Pong!')\n\n# Set DISCORD_BOT_TOKEN in your server environment\n# bot.run(os.environ['DISCORD_BOT_TOKEN'])");
-  const samples:Record<string,string> = {
-    'Python': "import discord\nfrom discord.ext import commands\n\nbot = commands.Bot(command_prefix='!', intents=discord.Intents.default())\n\n@bot.command()\nasync def ping(ctx):\n    await ctx.send('Pong!')\n\n# Set DISCORD_BOT_TOKEN in your server environment\n# bot.run(os.environ['DISCORD_BOT_TOKEN'])",
-    'JavaScript': "import { Client, GatewayIntentBits } from 'discord.js';\n\nconst client = new Client({ intents: [GatewayIntentBits.Guilds] });\n\nclient.once('ready', () => {\n  console.log(\`Logged in as \${client.user.tag}\`);\n});\n\n// Keep DISCORD_BOT_TOKEN in your server environment.\n// client.login(process.env.DISCORD_BOT_TOKEN);"
-  };
+  const samples:Record<'Python'|'JavaScript',string> = { Python: "import discord\nfrom discord.ext import commands\n\nbot = commands.Bot(command_prefix='!', intents=discord.Intents.default())\n\n@bot.command()\nasync def ping(ctx):\n    await ctx.send('Pong!')\n\n# Set DISCORD_BOT_TOKEN in your server environment\n# bot.run(os.environ['DISCORD_BOT_TOKEN'])", JavaScript: "import { Client, GatewayIntentBits } from 'discord.js';\n\nconst client = new Client({ intents: [GatewayIntentBits.Guilds] });\n\nclient.once('ready', () => {\n  console.log(`Logged in as ${client.user.tag}`);\n});\n\n// Keep DISCORD_BOT_TOKEN in your server environment.\n// client.login(process.env.DISCORD_BOT_TOKEN);" };
+  const [code,setCode] = useState(samples.Python);
   const changeLanguage=(value:'Python'|'JavaScript')=>{setLanguage(value);setCode(samples[value]);};
   const downloadCode=()=>{const blob=new Blob([code],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=target.toLowerCase().replace(/[^a-z0-9]+/g,'-')+'-bot.'+(language==='Python'?'py':'js');a.click();URL.revokeObjectURL(url);notify('Code file downloaded');};
   const saveDraft=()=>{try{localStorage.setItem('nagistudio-code-draft',JSON.stringify({language,target,code}));notify('Code draft saved in this browser');}catch{notify('Unable to save draft in this browser');}};
