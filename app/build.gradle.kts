@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.gradle.api.tasks.compile.JavaCompile
 
 plugins {
     id("com.android.application")
@@ -21,7 +22,11 @@ android {
     }
     buildFeatures { compose = true }
 }
+tasks.withType<JavaCompile>().configureEach {
+    options.release.set(17)
+}
 kotlin {
+    jvmToolchain(17)
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
     }
