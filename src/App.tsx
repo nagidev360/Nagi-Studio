@@ -89,40 +89,40 @@ function Stat({title,value,note,icon:Icon,tone}:{title:string;value:string;note:
 function CodeEditor({notify}:{notify:(s:string)=>void}) {
   const [language,setLanguage] = useState<'Python'|'JavaScript'>('Python');
   const [target,setTarget] = useState('Discord');
-  const samples:Record<string,Record<'Python'|'JavaScript',string>> = {
-    Discord: {
-      Python: "import os\nimport discord\nfrom discord.ext import commands\n\nbot = commands.Bot(command_prefix='!', intents=discord.Intents.default())\n\n@bot.command()\nasync def ping(ctx):\n    await ctx.send('Pong!')\n\n# Install: pip install discord.py\n# Set DISCORD_BOT_TOKEN in your server environment.\n# bot.run(os.environ['DISCORD_BOT_TOKEN'])",
-      JavaScript: "import { Client, GatewayIntentBits } from 'discord.js';\n\nconst client = new Client({ intents: [GatewayIntentBits.Guilds] });\nclient.once('ready', () => console.log('Bot ready:', client.user.tag));\n\n// Install: npm install discord.js\n// Set DISCORD_BOT_TOKEN in your server environment.\n// client.login(process.env.DISCORD_BOT_TOKEN);"
-    },
-    Telegram: {
-      Python: "import os\nfrom telegram import Update\nfrom telegram.ext import Application, CommandHandler, ContextTypes\n\nasync def start(update: Update, context: ContextTypes.DEFAULT_TYPE):\n    await update.message.reply_text('Hello from NagiStudio!')\n\napp = Application.builder().token(os.environ['TELEGRAM_BOT_TOKEN']).build()\napp.add_handler(CommandHandler('start', start))\n# Install: pip install python-telegram-bot\n# app.run_polling()",
-      JavaScript: "import { Telegraf } from 'telegraf';\n\nconst bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);\nbot.start((ctx) => ctx.reply('Hello from NagiStudio!'));\n// Install: npm install telegraf\n// bot.launch();\n// Handle SIGINT/SIGTERM and errors in production."
-    },
-    'Website chatbot': {
-      Python: "from flask import Flask, request, jsonify\n\napp = Flask(__name__)\n\n@app.post('/api/chat')\ndef chat():\n    message = (request.json or {}).get('message', '')\n    # Replace with your approved AI/provider logic.\n    return jsonify({'reply': f'You said: {message}'})\n\n# Install: pip install flask\n# Run behind HTTPS in production.",
-      JavaScript: "import express from 'express';\n\nconst app = express();\napp.use(express.json());\napp.post('/api/chat', (req, res) => {\n  const message = req.body?.message ?? '';\n  // Replace with your approved AI/provider logic.\n  res.json({ reply: `You said: ${message}` });\n});\n// Install: npm install express\n// Keep provider keys on the server, never in browser code."
-    },
-    'YouTube': {
-      Python: "import os\nfrom googleapiclient.discovery import build\n\n# Enable YouTube Data API v3 and configure credentials first.\nyoutube = build('youtube', 'v3', developerKey=os.environ['YOUTUBE_API_KEY'])\nresult = youtube.search().list(part='snippet', q='NagiStudio', maxResults=5).execute()\nfor item in result.get('items', []):\n    print(item['snippet']['title'])\n# Respect API quotas and YouTube policies.",
-      JavaScript: "// Example REST request using the official YouTube Data API v3.\nconst key = process.env.YOUTUBE_API_KEY;\nconst url = new URL('https://www.googleapis.com/youtube/v3/search');\nurl.search = new URLSearchParams({ part: 'snippet', q: 'NagiStudio', maxResults: '5', key }).toString();\nconst response = await fetch(url);\nif (!response.ok) throw new Error(`YouTube API error: ${response.status}`);\nconst data = await response.json();\nconsole.log(data.items?.map(item => item.snippet.title));\n// Respect API quotas and policies."
-    },
-    'WhatsApp': {
-      Python: "import os\nimport requests\n\n# Requires Meta WhatsApp Business Platform access and an approved phone number.\nurl = f\"https://graph.facebook.com/vXX.X/{os.environ['WHATSAPP_PHONE_NUMBER_ID']}/messages\"\nheaders = {'Authorization': f\"Bearer {os.environ['WHATSAPP_ACCESS_TOKEN']}\", 'Content-Type': 'application/json'}\npayload = {'messaging_product': 'whatsapp', 'to': os.environ['TEST_RECIPIENT'], 'type': 'text', 'text': {'body': 'Hello from NagiStudio'}}\n# Review Meta's current API version and messaging rules before sending.\n# response = requests.post(url, headers=headers, json=payload, timeout=20)",
-      JavaScript: "// Requires Meta WhatsApp Business Platform access and an approved phone number.\nconst phoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;\nconst token = process.env.WHATSAPP_ACCESS_TOKEN;\n// Use the current Graph API version from Meta's official documentation.\n// Never expose access tokens in browser code.\nconsole.log('Configure WhatsApp Cloud API for phone ID:', phoneId);"
-    },
-    Instagram: {
-      Python: "# Instagram automation must use Meta's supported Instagram APIs.\n# Configure an eligible professional account and permissions first.\nimport os\n\naccess_token = os.environ['INSTAGRAM_ACCESS_TOKEN']\n# Add only endpoints supported for your account and granted permissions.\n# Follow Meta's messaging, publishing, and rate-limit policies.\nprint('Instagram API credentials configured:', bool(access_token))",
-      JavaScript: "// Use Meta's supported Instagram APIs for eligible professional accounts.\nconst accessToken = process.env.INSTAGRAM_ACCESS_TOKEN;\n// Implement only endpoints allowed by the permissions granted to your app.\n// Follow Meta's rate limits and platform policies.\nconsole.log('Instagram API credentials configured:', Boolean(accessToken));"
-    },
-    'Custom API': {
-      Python: "import os\nimport requests\n\nAPI_URL = os.environ['CUSTOM_API_URL']\nAPI_TOKEN = os.environ['CUSTOM_API_TOKEN']\nresponse = requests.get(API_URL, headers={'Authorization': f'Bearer {API_TOKEN}'}, timeout=15)\nresponse.raise_for_status()\nprint(response.json())\n# Keep credentials in environment variables.",
-      JavaScript: "const response = await fetch(process.env.CUSTOM_API_URL, {\n  headers: { Authorization: `Bearer ${process.env.CUSTOM_API_TOKEN}` }\n});\nif (!response.ok) throw new Error(`API error: ${response.status}`);\nconsole.log(await response.json());\n// Keep credentials in server environment variables."
-    }
-  };
-  const genericSample:Record<'Python'|'JavaScript',string> = {
-    Python: "# Starter template for this platform.\n# Review the provider's official API and authentication requirements.\nimport os\n\n# Store secrets in environment variables, never in source control.\nprint('Configure your platform integration here.')",
-    JavaScript: "// Starter template for this platform.\n// Review the provider's official API and authentication requirements.\n// Store secrets in server environment variables, never in source control.\nconsole.log('Configure your platform integration here.');"
-  };
+  const samples: Record<string, Record<'Python'|'JavaScript', string>> = {
+  "Discord": {
+    "Python": "import os\nimport discord\nfrom discord.ext import commands\n\nbot = commands.Bot(command_prefix='!', intents=discord.Intents.default())\n\n@bot.command()\nasync def ping(ctx):\n    await ctx.send('Pong!')\n\n# Install: pip install discord.py\n# Set DISCORD_BOT_TOKEN in your server environment.\n# bot.run(os.environ['DISCORD_BOT_TOKEN'])",
+    "JavaScript": "import { Client, GatewayIntentBits } from 'discord.js';\n\nconst client = new Client({ intents: [GatewayIntentBits.Guilds] });\nclient.once('ready', () => console.log('Bot ready:', client.user.tag));\n\n// Install: npm install discord.js\n// Set DISCORD_BOT_TOKEN in your server environment.\n// client.login(process.env.DISCORD_BOT_TOKEN);"
+  },
+  "Telegram": {
+    "Python": "import os\nfrom telegram import Update\nfrom telegram.ext import Application, CommandHandler, ContextTypes\n\nasync def start(update: Update, context: ContextTypes.DEFAULT_TYPE):\n    await update.message.reply_text('Hello from NagiStudio!')\n\napp = Application.builder().token(os.environ['TELEGRAM_BOT_TOKEN']).build()\napp.add_handler(CommandHandler('start', start))\n# Install: pip install python-telegram-bot\n# app.run_polling()",
+    "JavaScript": "import { Telegraf } from 'telegraf';\n\nconst bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);\nbot.start((ctx) => ctx.reply('Hello from NagiStudio!'));\n// Install: npm install telegraf\n// bot.launch();\n// Handle SIGINT/SIGTERM and errors in production."
+  },
+  "YouTube": {
+    "Python": "import os\nfrom googleapiclient.discovery import build\n\n# Enable YouTube Data API v3 and configure credentials first.\nyoutube = build('youtube', 'v3', developerKey=os.environ['YOUTUBE_API_KEY'])\nresult = youtube.search().list(part='snippet', q='NagiStudio', maxResults=5).execute()\nfor item in result.get('items', []):\n    print(item['snippet']['title'])\n# Respect API quotas and YouTube policies.",
+    "JavaScript": "// Example REST request using the official YouTube Data API v3.\nconst key = process.env.YOUTUBE_API_KEY;\nconst url = new URL('https://www.googleapis.com/youtube/v3/search');\nurl.search = new URLSearchParams({ part: 'snippet', q: 'NagiStudio', maxResults: '5', key }).toString();\nconst response = await fetch(url);\nif (!response.ok) throw new Error('YouTube API error: ' + response.status);\nconst data = await response.json();\nconsole.log(data.items?.map(item => item.snippet.title));\n// Respect API quotas and policies."
+  },
+  "WhatsApp": {
+    "Python": "import os\nimport requests\n\n# Requires Meta WhatsApp Business Platform access and an approved phone number.\nurl = \"https://graph.facebook.com/vXX.X/\" + os.environ['WHATSAPP_PHONE_NUMBER_ID'] + \"/messages\"\nheaders = {'Authorization': 'Bearer ' + os.environ['WHATSAPP_ACCESS_TOKEN'], 'Content-Type': 'application/json'}\npayload = {'messaging_product': 'whatsapp', 'to': os.environ['TEST_RECIPIENT'], 'type': 'text', 'text': {'body': 'Hello from NagiStudio'}}\n# Review Meta's current API version and messaging rules before sending.\n# response = requests.post(url, headers=headers, json=payload, timeout=20)",
+    "JavaScript": "// Requires Meta WhatsApp Business Platform access and an approved phone number.\nconst phoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;\nconst token = process.env.WHATSAPP_ACCESS_TOKEN;\n// Use the current Graph API version from Meta's official documentation.\n// Never expose access tokens in browser code.\nconsole.log('Configure WhatsApp Cloud API for phone ID:', phoneId);"
+  },
+  "Instagram": {
+    "Python": "# Instagram automation must use Meta's supported Instagram APIs.\n# Configure an eligible professional account and permissions first.\nimport os\n\naccess_token = os.environ['INSTAGRAM_ACCESS_TOKEN']\n# Add only endpoints supported for your account and granted permissions.\n# Follow Meta's messaging, publishing, and rate-limit policies.\nprint('Instagram API credentials configured:', bool(access_token))",
+    "JavaScript": "// Use Meta's supported Instagram APIs for eligible professional accounts.\nconst accessToken = process.env.INSTAGRAM_ACCESS_TOKEN;\n// Implement only endpoints allowed by the permissions granted to your app.\n// Follow Meta's rate limits and platform policies.\nconsole.log('Instagram API credentials configured:', Boolean(accessToken));"
+  },
+  "Website chatbot": {
+    "Python": "from flask import Flask, request, jsonify\n\napp = Flask(__name__)\n\n@app.post('/api/chat')\ndef chat():\n    message = (request.json or {}).get('message', '')\n    # Replace with your approved AI/provider logic.\n    return jsonify({'reply': f'You said: {message}'})\n\n# Install: pip install flask\n# Run behind HTTPS in production.",
+    "JavaScript": "import express from 'express';\n\nconst app = express();\napp.use(express.json());\napp.post('/api/chat', (req, res) => {\n  const message = req.body?.message ?? '';\n  // Replace with your approved AI/provider logic.\n  res.json({ reply: 'You said: ' + message });\n});\n// Install: npm install express\n// Keep provider keys on the server, never in browser code."
+  },
+  "Custom API": {
+    "Python": "import os\nimport requests\n\nAPI_URL = os.environ['CUSTOM_API_URL']\nAPI_TOKEN = os.environ['CUSTOM_API_TOKEN']\nresponse = requests.get(API_URL, headers={'Authorization': 'Bearer ' + API_TOKEN}, timeout=15)\nresponse.raise_for_status()\nprint(response.json())\n# Keep credentials in environment variables.",
+    "JavaScript": "const response = await fetch(process.env.CUSTOM_API_URL, {\n  headers: { Authorization: 'Bearer ' + process.env.CUSTOM_API_TOKEN }\n});\nif (!response.ok) throw new Error('API error: ' + response.status);\nconsole.log(await response.json());\n// Keep credentials in server environment variables."
+  }
+};
+  const genericSample: Record<'Python'|'JavaScript', string> = {
+  "Python": "# Starter template for this platform.\n# Review the provider's official API and authentication requirements.\nimport os\n\n# Store secrets in environment variables, never in source control.\nprint('Configure your platform integration here.')",
+  "JavaScript": "// Starter template for this platform.\n// Review the provider's official API and authentication requirements.\n// Store secrets in server environment variables, never in source control.\nconsole.log('Configure your platform integration here.');"
+};
   const sampleFor=(platform:string, lang:'Python'|'JavaScript') => (samples[platform] || genericSample)[lang];
   const [code,setCode] = useState(sampleFor('Discord','Python'));
   const changeLanguage=(value:'Python'|'JavaScript')=>{setLanguage(value);setCode(sampleFor(target,value));};
